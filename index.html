@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Programming Docs</title>
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="bg-gray-100 dark:bg-gray-900 text-gray-800 dark:text-gray-200">
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar" class="w-64 bg-gray-200 dark:bg-gray-800 p-4 hidden lg:block">
+      <h2 class="text-xl font-bold mb-4">Languages</h2>
+      <ul id="sidebar-list" class="space-y-3"></ul>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6">
+      <!-- Header -->
+      <header class="flex justify-between items-center mb-6">
+        <h1 class="text-2xl font-bold">Programming Documentation</h1>
+        <button id="theme-toggle" class="p-2 bg-gray-300 dark:bg-gray-700 rounded-md">
+          Toggle Theme
+        </button>
+      </header>
+      
+      <!-- Content -->
+      <div id="content" class="prose dark:prose-invert max-w-none"></div>
+    </main>
+  </div>
+
+  <!-- Mobile Sidebar Toggle -->
+  <button id="mobile-toggle" class="lg:hidden fixed top-4 left-4 p-2 bg-gray-300 dark:bg-gray-700 rounded-md">
+    ☰
+  </button>
+
+  <script src="scripts.js"></script>
+</body>
+</html>
