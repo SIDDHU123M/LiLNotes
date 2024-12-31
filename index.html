@@ -12,97 +12,29 @@
       <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
       <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
       <link href="https://unpkg.com/prismjs@1.29.0/themes/prism-tomorrow.css" rel="stylesheet">
+      <link rel="stylesheet" href="styles.css">
 </head>
-<style>
-      @font-face {
-            font-family: "Dank-Mono";
-            src: url("DankMono-Regular.otf");
-      }
-
-      * {
-            font-family: 'Inter', sans-serif;
-      }
-
-      pre, code, span {
-            font-family: "Dank-Mono", monospace !important;
-      }
-
-      .glass {
-            background: rgba(255, 255, 255, 0.15);
-            backdrop-filter: blur(12px);
-            -webkit-backdrop-filter: blur(12px);
-            border: 1px solid rgba(255, 255, 255, 0.3);
-            box-shadow: 0 8px 32px 0 rgba(31, 38, 135, 0.07);
-      }
-
-      .dark .glass {
-            background: rgba(17, 24, 39, 0.8);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-      }
-
-      pre[class*="language-"] {
-            position: relative;
-            margin: 1.5em 0;
-            border-radius: 0.5rem;
-      }
-
-      .copy-btn {
-            position: absolute;
-            top: 0.5rem;
-            right: 0.5rem;
-            padding: 0.5rem;
-            background: rgba(255, 255, 255, 0.1);
-            border-radius: 0.375rem;
-            cursor: pointer;
-            transition: all 0.2s;
-      }
-
-      .copy-btn:hover {
-            background: rgba(255, 255, 255, 0.2);
-      }
-
-      #content h1,
-      #content h3 {
-            @apply text-3xl font-bold mb-6;
-      }
-
-      #content h2,
-      #content h4 {
-            @apply text-2xl font-semibold mb-4 mt-8;
-      }
-
-      #content p {
-            @apply mb-4 leading-relaxed;
-      }
-
-      #content ul {
-            @apply list-disc pl-6 mb-4;
-      }
-
-      #content code:not([class*="language-"]) {
-            @apply bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded;
-      }
-
-      hr {
-            @apply my-8 border-t border-gray-300 dark:border-gray-700;
-            margin: 1.2em 0px 1.2em 0px !important;
-      }
-</style>
 
 <body
       class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
+      <!-- Mobile Menu Button -->
+      <button onclick="toggleSidebar()"
+            class="mobile-menu fixed top-4 left-4 z-50 p-2 glass rounded-lg dark:text-white">
+            <i class="bi bi-list text-2xl"></i>
+      </button>
+
       <div class="flex flex-col md:flex-row h-screen">
             <!-- Sidebar -->
-            <aside class="glass w-full md:w-72 p-6 overflow-y-auto">
+            <aside id="sidebar" class="sidebar glass w-full md:w-72 p-6 overflow-y-auto">
                   <div class="flex items-center justify-between mb-8">
                         <h1
                               class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
                               LiL Notes
                         </h1>
-                        <button onclick="toggleTheme()"
+                        <!-- <button onclick="toggleTheme()"
                               class="p-2.5 rounded-lg glass hover:bg-opacity-70 transition-all">
                               <i class="bi bi-moon-stars text-lg dark:text-white"></i>
-                        </button>
+                        </button> -->
                   </div>
                   <nav id="languageNav" class="space-y-2.5">
                         <!-- Languages will be inserted here -->
@@ -128,18 +60,6 @@
                   { name: 'CSS', color: '#1572B6', icon: '<i class="bi bi-filetype-css"></i>' },
                   { name: 'React', color: '#61DAFB', icon: '<i class="bi bi-radioactive"></i>' },
                   { name: 'Node.js', color: '#339933', icon: '<i class="bi bi-node-plus"></i>' },
-                  { name: 'Deno', color: '#000000', icon: '<i class="bi bi-file" ' },
-                  { name: 'Go', color: '#00ADD8', icon: '<i class="bi bi-file-earmark-go"></i>' },
-                  { name: 'Ruby', color: '#CC342D', icon: '<i class="bi bi-file-earmark-ruby"></i>' },
-                  { name: 'Rust', color: '#000000', icon: '<i class="bi bi-file-earmark-rust"></i>' },
-                  { name: 'Swift', color: '#FA7343', icon: '<i class="bi bi-file-earmark-swift"></i>' },
-                  { name: 'Kotlin', color: '#0095D5', icon: '<i class="bi bi-file-earmark-kotlin"></i>' },
-                  { name: 'C++', color: '#00599C', icon: '<i class="bi bi-file-earmark-cpp"></i>' },
-                  { name: 'C#', color: '#5C2D91', icon: '<i class="bi bi-file-earmark-csharp"></i>' },
-                  { name: 'PHP', color: '#777BB4', icon: '<i class="bi bi-file-earmark-php"></i>' },
-                  { name: 'SQL', color: '#4479A1', icon: '<i class="bi bi-file-earmark-sql"></i>' },
-                  { name: 'MongoDB', color: '#47A248', icon: '<i class="bi bi-file-earmark-mongodb"></i>' },
-                  { name: 'Firebase', color: '#FFCA28', icon: '<i class="bi bi-file" ' }
             ];
 
             const documentation = {
@@ -205,7 +125,7 @@ class Dog(Animal):
         return "Woof!"</code></pre>
     `,
                   TypeScript: `
-    <h3>Comprehensive Guide to TypeScript</h3>
+    <h1>Comprehensive Guide to TypeScript</h1>
 <hr />
 <h3>1. Introduction to TypeScript</h3>
 <h4>What is TypeScript?</h4>
@@ -501,7 +421,12 @@ Custom Libraries: Define your own type declarations for libraries.</li>
             <span class="mr-3 text-xl" style="color: ${lang.color}">${lang.icon}</span>
             <span class="font-medium">${lang.name}</span>
         `;
-                        btn.onclick = () => loadDocumentation(lang.name);
+                        btn.onclick = () => {
+                              loadDocumentation(lang.name);
+                              if (window.innerWidth < 768) {
+                                    toggleSidebar();
+                              }
+                        };
                         nav.appendChild(btn);
                   });
             }
@@ -532,12 +457,22 @@ Custom Libraries: Define your own type declarations for libraries.</li>
                   document.documentElement.classList.toggle('dark');
             }
 
+            function toggleSidebar() {
+                  const sidebar = document.getElementById('sidebar');
+                  sidebar.classList.toggle('active');
+            }
+
             // Initialize
             renderLanguages();
             loadDocumentation('JavaScript');
 
-            // Check system preference for dark mode
-            if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            // Check if there's a stored theme preference
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                  if (savedTheme === 'dark') {
+                        document.documentElement.classList.add('dark');
+                  }
+            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
                   document.documentElement.classList.add('dark');
             }
       </script>
