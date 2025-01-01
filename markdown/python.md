@@ -1,5 +1,5 @@
-Python ZTM Cheatsheet 💻🚀
-===============================
+<p align="center"><img src="https://cdn.jsdelivr.net/gh/devicons/devicon@latest/icons/python/python-original-wordmark.svg" width="64" height="64" alt="header-image"></p>
+<h2 align="center">Python CheatSheet 🚀</h2>
 
 Contents
 --------
