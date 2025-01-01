@@ -25,7 +25,7 @@
 
       <div class="flex flex-col md:flex-row h-screen">
             <!-- Sidebar -->
-            <aside id="sidebar" class="mx-auto m-4 rounded-xl sidebar glass w-full md:w-72 p-6 overflow-y-auto">
+            <aside id="sidebar" class="mx-auto rounded-xl sidebar glass w-full md:w-72 p-6 overflow-y-auto">
                   <div class="flex items-center justify-between mb-8">
                         <h1
                               class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
@@ -51,22 +51,25 @@
                   { name: 'JavaScript', color: '#F7DF1E', icon: '<i class="bi bi-filetype-js"></i>', file: 'javascript.md' },
                   { name: 'TypeScript', color: '#007ACC', icon: '<i class="bi bi-filetype-tsx"></i>', file: 'typescript.md' },
                   { name: 'Python', color: '#3776AB', icon: '<i class="bi bi-filetype-py"></i>', file: 'python.md' },
-                  // { name: 'Java', color: '#007396', icon: '<i class="bi bi-cup-hot"></i>', file: 'java.md' },
+                  { name: 'Java', color: '#007396', icon: '<i class="bi bi-cup-hot"></i>', file: 'java.md' },
                   { name: 'HTML', color: '#E34F26', icon: '<i class="bi bi-filetype-html"></i>', file: 'html.md' },
                   { name: 'CSS', color: '#1572B6', icon: '<i class="bi bi-filetype-css"></i>', file: 'css.md' },
                   { name: 'React', color: '#61DAFB', icon: '<i class="bi bi-radioactive"></i>', file: 'react.md' },
                   { name: 'Node.js', color: '#339933', icon: '<i class="bi bi-node-plus"></i>', file: 'nodejs.md' },
+                  { name: 'Vue.js', color: '#4FC08D', icon: '<i class="bi bi-file"></i>', file: 'vue.md' },
+                  { name: 'Angular', color: '#DD0031', icon: '<i class="bi bi-file"></i>', file: 'angular.md' },
+                  { name: 'Deno', color: '#000000', icon: '<i class="bi bi-file"></i>', file: 'deno.md' },
             ];
-
             function renderLanguages() {
                   const nav = document.getElementById('languageNav');
                   languages.forEach(lang => {
                         const btn = document.createElement('button');
                         btn.className = 'w-full flex items-center p-4 rounded-lg glass hover:bg-opacity-70 transition-all dark:text-white';
+                        btn.setAttribute('data-file', lang.file);
                         btn.innerHTML = `
-            <span class="mr-3 text-xl" style="color: ${lang.color}">${lang.icon}</span>
-            <span class="font-medium">${lang.name}</span>
-        `;
+                        <span class="mr-3 text-xl" style="color: ${lang.color}">${lang.icon}</span>
+                        <span class="font-medium">${lang.name}</span>
+                        `;
                         btn.onclick = () => {
                               loadDocumentation(lang.file);
                               if (window.innerWidth < 768) {
@@ -77,59 +80,60 @@
                   });
             }
 
-      async function loadDocumentation(file) {
-            const content = document.getElementById('content');
-            try {
-                  const response = await fetch(`markdown/${file}`);
-                  if (response.ok) {
-                        const markdown = await response.text();
-                        const converter = new showdown.Converter();
+            async function loadDocumentation(file) {
+                  const content = document.getElementById('content');
+                  try {
+                        const response = await fetch(`markdown/${file}`);
+                        if (response.ok) {
+                              const markdown = await response.text();
+                              const converter = new showdown.Converter();
 
-                        converter.addExtension(() => {
-                              return [{
-                                    type: 'output',
-                                    regex: /<h([1-6])>([^<]+)<\/h\1>/g,
-                                    replace: (match, level, text) => {
-                                          const id = text.toLowerCase().replace(' ', '-');
-                                          return `<h${level} id="${id}">${text}</h${level}>`;
-                                    }
-                              }];
-                        }, 'headingId');
+                              converter.addExtension(() => {
+                                    return [{
+                                          type: 'output',
+                                          regex: /<h([1-6])>([^<]+)<\/h\1>/g,
+                                          replace: (match, level, text) => {
+                                                const id = text.toLowerCase().replace(' ', '-');
+                                                return `<h${level} id="${id}">${text}</h${level}>`;
+                                          }
+                                    }];
+                              }, 'headingId');
 
-                        const html = converter.makeHtml(markdown);
-                        content.innerHTML = html;
-                        Prism.highlightAll();
-                  } else {
-                        content.innerHTML = `<p class="text-red-600">Error: File not found.</p>`;
+                              const html = converter.makeHtml(markdown);
+                              content.innerHTML = html;
+                              Prism.highlightAll();
+                        } else {
+                              content.innerHTML = `<p class="text-red-600">Error: File not found.</p>`;
+                        }
+                  } catch (error) {
+                        content.innerHTML = `<p class="text-red-600">Error: ${error.message}</p>`;
                   }
-            } catch (error) {
-                  content.innerHTML = `<p class="text-red-600">Error: ${error.message}</p>`;
-            }
 
-            document.querySelectorAll('pre code').forEach(block => {
-                  const pre = block.parentElement;
-                  const copyButton = document.createElement('button');
-                  copyButton.className = 'copy-btn';
-                  copyButton.innerHTML = '<i class="bi bi-clipboard"></i>';
-                  copyButton.onclick = () => {
-                        navigator.clipboard.writeText(block.textContent);
-                        copyButton.innerHTML = '<i class="bi bi-check2"></i>';
-                        setTimeout(() => {
-                              copyButton.innerHTML = '<i class="bi bi-clipboard"></i>';
-                        }, 2000);
-                  };
-                  pre.appendChild(copyButton);
-            });
+                  document.querySelectorAll('pre code').forEach(block => {
+                        const pre = block.parentElement;
+                        const copyButton = document.createElement('button');
+                        copyButton.className = 'copy-btn';
+                        copyButton.innerHTML = '<i class="bi bi-clipboard"></i>';
+                        copyButton.onclick = () => {
+                              navigator.clipboard.writeText(block.textContent);
+                              copyButton.innerHTML = '<i class="bi bi-check2"></i>';
+                              setTimeout(() => {
+                                    copyButton.innerHTML = '<i class="bi bi-clipboard"></i>';
+                              }, 2000);
+                        };
+                        pre.appendChild(copyButton);
+                  });
 
-            // Add selected class to the clicked button and remove from others
-            document.querySelectorAll('#languageNav button').forEach(btn => {
-                  btn.classList.remove('selected');
-            });
-            const selectedButton = Array.from(document.querySelectorAll('#languageNav button')).find(btn => btn.innerHTML.includes(file.split('.')[0]));
-            if (selectedButton) {
-                  selectedButton.classList.add('selected');
+                  document.querySelectorAll('#languageNav button').forEach(btn => {
+                        btn.classList.remove('selected');
+                  });
+                  const buttons = document.querySelectorAll('#languageNav button');
+                  buttons.forEach(btn => {
+                        if (btn.getAttribute('data-file') === file) {
+                              btn.classList.add('selected');
+                        }
+                  });
             }
-      }
 
             function toggleTheme() {
                   document.documentElement.classList.toggle('dark');
@@ -140,9 +144,8 @@
                   sidebar.classList.toggle('active');
             }
 
-            // Initialize
             renderLanguages();
-            loadDocumentation('javascript.md');
+            loadDocumentation('README.md');
 
             // Check if there's a stored theme preference
             // const savedTheme = localStorage.getItem('theme');
