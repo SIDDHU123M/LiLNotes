@@ -5,14 +5,14 @@
       <meta charset="UTF-8">
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>LiL Notes - Documentation Hub</title>
-      <script src="https://unpkg.com/marked@4.0.0/marked.min.js"></script>
-      <script src="https://cdn.tailwindcss.com"></script>
       <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css">
       <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-      <script src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
-      <script src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
       <link href="https://unpkg.com/prismjs@1.29.0/themes/prism-tomorrow.css" rel="stylesheet">
       <link rel="stylesheet" href="styles.css">
+      <script defer src="https://cdn.tailwindcss.com"></script>
+      <script defer src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
+      <script defer src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
+      <script defer src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
 </head>
 
 <body
@@ -31,10 +31,6 @@
                               class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
                               LittlE Notes
                         </h1>
-                        <!-- <button onclick="toggleTheme()"
-                              class="p-2.5 rounded-lg glass hover:bg-opacity-70 transition-all">
-                              <i class="bi bi-moon-stars text-lg dark:text-white"></i>
-                        </button> -->
                   </div>
                   <nav id="languageNav" class="space-y-2.5">
                         <!-- Languages will be inserted here -->
@@ -52,82 +48,15 @@
 
       <script>
             const languages = [
-                  { name: 'JavaScript', color: '#F7DF1E', icon: '<i class="bi bi-filetype-js"></i>' },
-                  { name: 'TypeScript', color: '#007ACC', icon: '<i class="bi bi-filetype-tsx"></i>' },
-                  { name: 'Python', color: '#3776AB', icon: '<i class="bi bi-filetype-py"></i>' },
-                  { name: 'Java', color: '#007396', icon: '<i class="bi bi-cup-hot"></i>' },
-                  { name: 'HTML', color: '#E34F26', icon: '<i class="bi bi-filetype-html"></i>' },
-                  { name: 'CSS', color: '#1572B6', icon: '<i class="bi bi-filetype-css"></i>' },
-                  { name: 'React', color: '#61DAFB', icon: '<i class="bi bi-radioactive"></i>' },
-                  { name: 'Node.js', color: '#339933', icon: '<i class="bi bi-node-plus"></i>' },
+                  { name: 'JavaScript', color: '#F7DF1E', icon: '<i class="bi bi-filetype-js"></i>', file: 'javascript.md' },
+                  { name: 'TypeScript', color: '#007ACC', icon: '<i class="bi bi-filetype-tsx"></i>', file: 'typescript.md' },
+                  { name: 'Python', color: '#3776AB', icon: '<i class="bi bi-filetype-py"></i>', file: 'python.md' },
+                  { name: 'Java', color: '#007396', icon: '<i class="bi bi-cup-hot"></i>', file: 'java.md' },
+                  { name: 'HTML', color: '#E34F26', icon: '<i class="bi bi-filetype-html"></i>', file: 'html.md' },
+                  { name: 'CSS', color: '#1572B6', icon: '<i class="bi bi-filetype-css"></i>', file: 'css.md' },
+                  { name: 'React', color: '#61DAFB', icon: '<i class="bi bi-radioactive"></i>', file: 'react.md' },
+                  { name: 'Node.js', color: '#339933', icon: '<i class="bi bi-node-plus"></i>', file: 'nodejs.md' },
             ];
-
-            const documentation = {
-                  JavaScript: `
-        <h1>JavaScript Documentation</h1>
-        <p>JavaScript is a dynamic programming language that's used for web development, server-side scripting, and creating interactive web applications.</p>
-        
-        <h2>Basic Syntax</h2>
-        <pre><code class="language-javascript">// Variables
-let greeting = "Hello World";
-const PI = 3.14159;
-
-// Functions
-function add(a, b) {
-    return a + b;
-}
-
-// Arrow Functions
-const multiply = (a, b) => a * b;
-
-// Classes
-class Person {
-    constructor(name) {
-        this.name = name;
-    }
-    
-    sayHello() {
-        return \`Hello, I'm \${this.name}\`;
-    }
-}</code></pre>
-
-        <h2>Key Features</h2>
-        <ul>
-            <li>First-class functions</li>
-            <li>Dynamic typing</li>
-            <li>Prototype-based object orientation</li>
-            <li>Event-driven programming</li>
-        </ul>
-    `,
-                  Python: `
-        <h1>Python Documentation</h1>
-        <p>Python is a high-level, interpreted programming language known for its simplicity and readability.</p>
-        
-        <h2>Basic Examples</h2>
-        <pre><code class="language-python"># Basic list operations
-numbers = [1, 2, 3, 4, 5]
-squared = [x**2 for x in numbers]
-
-# Functions
-def greet(name: str) -> str:
-    return f"Hello, {name}!"
-
-# Classes
-class Animal:
-    def __init__(self, name):
-        self.name = name
-        
-    def speak(self):
-        pass
-
-class Dog(Animal):
-    def speak(self):
-        return "Woof!"</code></pre>
-    `,
-//                   TypeScript: `
-
-//     `
-            };
 
             function renderLanguages() {
                   const nav = document.getElementById('languageNav');
@@ -139,7 +68,7 @@ class Dog(Animal):
             <span class="font-medium">${lang.name}</span>
         `;
                         btn.onclick = () => {
-                              loadDocumentation(lang.name);
+                              loadDocumentation(lang.file);
                               if (window.innerWidth < 768) {
                                     toggleSidebar();
                               }
@@ -148,9 +77,34 @@ class Dog(Animal):
                   });
             }
 
-            function loadDocumentation(language) {
+            async function loadDocumentation(file) {
                   const content = document.getElementById('content');
-                  content.innerHTML = documentation[language] || `<h1>${language}</h1><p>Documentation coming soon...</p>`;
+                  try {
+                        const response = await fetch(`markdown/${file}`);
+                        if (response.ok) {
+                              const markdown = await response.text();
+                              const converter = new showdown.Converter();
+
+                              converter.addExtension(() => {
+                                    return [{
+                                          type: 'output',
+                                          regex: /<h([1-6])>([^<]+)<\/h\1>/g,
+                                          replace: (match, level, text) => {
+                                                const id = text.toLowerCase().replace(' ', '-');
+                                                return `<h${level} id="${id}">${text}</h${level}>`;
+                                          }
+                                    }];
+                              }, 'headingId');
+
+                              const html = converter.makeHtml(markdown);
+                              content.innerHTML = html;
+                              Prism.highlightAll();
+                        } else {
+                              content.innerHTML = `<p class="text-red-600">Error: File not found.</p>`;
+                        }
+                  } catch (error) {
+                        content.innerHTML = `<p class="text-red-600">Error: ${error.message}</p>`;
+                  }
 
                   document.querySelectorAll('pre code').forEach(block => {
                         const pre = block.parentElement;
@@ -166,8 +120,6 @@ class Dog(Animal):
                         };
                         pre.appendChild(copyButton);
                   });
-
-                  Prism.highlightAll();
             }
 
             function toggleTheme() {
@@ -181,7 +133,7 @@ class Dog(Animal):
 
             // Initialize
             renderLanguages();
-            loadDocumentation('JavaScript');
+            loadDocumentation('javascript.md');
 
             // Check if there's a stored theme preference
             const savedTheme = localStorage.getItem('theme');
