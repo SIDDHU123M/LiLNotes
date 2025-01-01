@@ -25,7 +25,7 @@
 
       <div class="flex flex-col md:flex-row h-screen">
             <!-- Sidebar -->
-            <aside id="sidebar" class="sidebar glass w-full md:w-72 p-6 overflow-y-auto">
+            <aside id="sidebar" class="mx-auto m-4 rounded-xl sidebar glass w-full md:w-72 p-6 overflow-y-auto">
                   <div class="flex items-center justify-between mb-8">
                         <h1
                               class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
@@ -40,8 +40,8 @@
             <!-- Main Content -->
             <main class="flex-1 p-6 overflow-y-auto">
                   <div id="content"
-                        class="max-w-4xl mx-auto glass p-8 rounded-xl dark:text-white prose dark:prose-invert">
-                        <!-- Content will be inserted here -->
+                        class="max-w-6xl mx-auto glass p-8 rounded-xl dark:text-white prose dark:prose-invert">
+                        <!-- content inserted -->
                   </div>
             </main>
       </div>
@@ -51,7 +51,7 @@
                   { name: 'JavaScript', color: '#F7DF1E', icon: '<i class="bi bi-filetype-js"></i>', file: 'javascript.md' },
                   { name: 'TypeScript', color: '#007ACC', icon: '<i class="bi bi-filetype-tsx"></i>', file: 'typescript.md' },
                   { name: 'Python', color: '#3776AB', icon: '<i class="bi bi-filetype-py"></i>', file: 'python.md' },
-                  { name: 'Java', color: '#007396', icon: '<i class="bi bi-cup-hot"></i>', file: 'java.md' },
+                  // { name: 'Java', color: '#007396', icon: '<i class="bi bi-cup-hot"></i>', file: 'java.md' },
                   { name: 'HTML', color: '#E34F26', icon: '<i class="bi bi-filetype-html"></i>', file: 'html.md' },
                   { name: 'CSS', color: '#1572B6', icon: '<i class="bi bi-filetype-css"></i>', file: 'css.md' },
                   { name: 'React', color: '#61DAFB', icon: '<i class="bi bi-radioactive"></i>', file: 'react.md' },
@@ -77,50 +77,59 @@
                   });
             }
 
-            async function loadDocumentation(file) {
-                  const content = document.getElementById('content');
-                  try {
-                        const response = await fetch(`markdown/${file}`);
-                        if (response.ok) {
-                              const markdown = await response.text();
-                              const converter = new showdown.Converter();
+      async function loadDocumentation(file) {
+            const content = document.getElementById('content');
+            try {
+                  const response = await fetch(`markdown/${file}`);
+                  if (response.ok) {
+                        const markdown = await response.text();
+                        const converter = new showdown.Converter();
 
-                              converter.addExtension(() => {
-                                    return [{
-                                          type: 'output',
-                                          regex: /<h([1-6])>([^<]+)<\/h\1>/g,
-                                          replace: (match, level, text) => {
-                                                const id = text.toLowerCase().replace(' ', '-');
-                                                return `<h${level} id="${id}">${text}</h${level}>`;
-                                          }
-                                    }];
-                              }, 'headingId');
+                        converter.addExtension(() => {
+                              return [{
+                                    type: 'output',
+                                    regex: /<h([1-6])>([^<]+)<\/h\1>/g,
+                                    replace: (match, level, text) => {
+                                          const id = text.toLowerCase().replace(' ', '-');
+                                          return `<h${level} id="${id}">${text}</h${level}>`;
+                                    }
+                              }];
+                        }, 'headingId');
 
-                              const html = converter.makeHtml(markdown);
-                              content.innerHTML = html;
-                              Prism.highlightAll();
-                        } else {
-                              content.innerHTML = `<p class="text-red-600">Error: File not found.</p>`;
-                        }
-                  } catch (error) {
-                        content.innerHTML = `<p class="text-red-600">Error: ${error.message}</p>`;
+                        const html = converter.makeHtml(markdown);
+                        content.innerHTML = html;
+                        Prism.highlightAll();
+                  } else {
+                        content.innerHTML = `<p class="text-red-600">Error: File not found.</p>`;
                   }
-
-                  document.querySelectorAll('pre code').forEach(block => {
-                        const pre = block.parentElement;
-                        const copyButton = document.createElement('button');
-                        copyButton.className = 'copy-btn';
-                        copyButton.innerHTML = '<i class="bi bi-clipboard"></i>';
-                        copyButton.onclick = () => {
-                              navigator.clipboard.writeText(block.textContent);
-                              copyButton.innerHTML = '<i class="bi bi-check2"></i>';
-                              setTimeout(() => {
-                                    copyButton.innerHTML = '<i class="bi bi-clipboard"></i>';
-                              }, 2000);
-                        };
-                        pre.appendChild(copyButton);
-                  });
+            } catch (error) {
+                  content.innerHTML = `<p class="text-red-600">Error: ${error.message}</p>`;
             }
+
+            document.querySelectorAll('pre code').forEach(block => {
+                  const pre = block.parentElement;
+                  const copyButton = document.createElement('button');
+                  copyButton.className = 'copy-btn';
+                  copyButton.innerHTML = '<i class="bi bi-clipboard"></i>';
+                  copyButton.onclick = () => {
+                        navigator.clipboard.writeText(block.textContent);
+                        copyButton.innerHTML = '<i class="bi bi-check2"></i>';
+                        setTimeout(() => {
+                              copyButton.innerHTML = '<i class="bi bi-clipboard"></i>';
+                        }, 2000);
+                  };
+                  pre.appendChild(copyButton);
+            });
+
+            // Add selected class to the clicked button and remove from others
+            document.querySelectorAll('#languageNav button').forEach(btn => {
+                  btn.classList.remove('selected');
+            });
+            const selectedButton = Array.from(document.querySelectorAll('#languageNav button')).find(btn => btn.innerHTML.includes(file.split('.')[0]));
+            if (selectedButton) {
+                  selectedButton.classList.add('selected');
+            }
+      }
 
             function toggleTheme() {
                   document.documentElement.classList.toggle('dark');
@@ -136,14 +145,14 @@
             loadDocumentation('javascript.md');
 
             // Check if there's a stored theme preference
-            const savedTheme = localStorage.getItem('theme');
-            if (savedTheme) {
-                  if (savedTheme === 'dark') {
-                        document.documentElement.classList.add('dark');
-                  }
-            } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                  document.documentElement.classList.add('dark');
-            }
+            // const savedTheme = localStorage.getItem('theme');
+            // if (savedTheme) {
+            //       if (savedTheme === 'dark') {
+            //             document.documentElement.classList.add('dark');
+            //       }
+            // } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
+            //       document.documentElement.classList.add('dark');
+            // }
       </script>
 </body>
 
