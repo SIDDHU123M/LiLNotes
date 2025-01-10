@@ -32,11 +32,6 @@ body {
   border: 1px solid rgba(255, 255, 255, 0.1);
 }
 
-/* .dark .glass {
-  background: rgba(17, 24, 39, 0.8);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-} */
-
 pre[class*="language-"] {
   position: relative;
   margin: 1.5em 0;
@@ -58,33 +53,6 @@ pre[class*="language-"] {
   background: rgba(255, 255, 255, 0.2);
 }
 
-/* #content h1 {
-  font-size: 1.875rem; 
-  font-weight: 700; 
-  margin-bottom: 1.5rem; 
-}
-
-#content h2 {
-  font-size: 1.5rem; 
-  font-weight: 600; 
-  margin-bottom: 1rem; 
-  margin-top: 2rem; 
-}
-
-#content p {
-  margin-bottom: 1rem; 
-  line-height: 1.625; 
-}
-
-#content ul {
-  list-style-type: disc; 
-  padding-left: 1.5rem; 
-  margin-bottom: 1rem; 
-} */
-
-/* #content code:not([class*="language-"]) {
-            @apply bg-gray-100 dark:bg-gray-700 px-2 py-0.5 rounded;
-      } */
 
 .mobile-menu {
   display: none;
@@ -160,26 +128,6 @@ code {
   /* word-break: break-all !important;  */
 }
 
-/* pre, code {
-  @apply overflow-x-auto;
-}
-
-pre::-webkit-scrollbar {
-  height: 8px;
-}
-
-pre::-webkit-scrollbar-track {
-  @apply bg-gray-200 dark:bg-gray-700;
-}
-
-pre::-webkit-scrollbar-thumb {
-  @apply bg-gray-400 dark:bg-gray-600 rounded-full;
-}
-
-pre::-webkit-scrollbar-thumb:hover {
-  @apply bg-gray-500 dark:bg-gray-500;
-} */
-
 details {
   background: rgba(255, 255, 255, 0.15);
   backdrop-filter: blur(12px);
@@ -219,4 +167,27 @@ details p {
 
 #sidebar {
   margin: 1rem !important;
+}
+
+ul, ol {
+  list-style-type: disc !important;
+  padding-left: 1.5rem !important;
+}
+
+li {
+  margin-bottom: 0.5rem !important;
+}
+
+li a {
+    color: #1addda !important;
+    text-decoration: none !important;
+    font-weight: 700 !important;
+    transition: all 0.3s ease !important;
+  }
+
+li p a {
+  color: #1addda !important;
+  text-decoration: none !important;
+  font-weight: 700 !important;
+  transition: all 0.3s ease !important;
 }

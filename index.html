@@ -33,7 +33,6 @@
                         </h1>
                   </div>
                   <nav id="languageNav" class="space-y-2.5">
-                        <!-- Languages will be inserted here -->
                   </nav>
             </aside>
 
@@ -50,16 +49,11 @@
             const languages = [
                   { name: 'JavaScript', color: '#F7DF1E', icon: '<i class="bi bi-filetype-js"></i>', file: 'javascript.md' },
                   { name: 'TypeScript', color: '#007ACC', icon: '<i class="bi bi-filetype-tsx"></i>', file: 'typescript.md' },
-                  { name: 'Python', color: '#3776AB', icon: '<i class="bi bi-filetype-py"></i>', file: 'python.md' },
-                  { name: 'Java', color: '#007396', icon: '<i class="bi bi-cup-hot"></i>', file: 'java.md' },
-                  { name: 'HTML', color: '#E34F26', icon: '<i class="bi bi-filetype-html"></i>', file: 'html.md' },
-                  { name: 'CSS', color: '#1572B6', icon: '<i class="bi bi-filetype-css"></i>', file: 'css.md' },
                   { name: 'React', color: '#61DAFB', icon: '<i class="bi bi-radioactive"></i>', file: 'react.md' },
                   { name: 'Node.js', color: '#339933', icon: '<i class="bi bi-node-plus"></i>', file: 'nodejs.md' },
-                  { name: 'Vue.js', color: '#4FC08D', icon: '<i class="bi bi-file"></i>', file: 'vue.md' },
-                  { name: 'Angular', color: '#DD0031', icon: '<i class="bi bi-file"></i>', file: 'angular.md' },
-                  { name: 'Deno', color: '#000000', icon: '<i class="bi bi-file"></i>', file: 'deno.md' },
+                  { name: 'Python', color: '#3776AB', icon: '<i class="bi bi-filetype-py"></i>', file: 'python.md' },
             ];
+
             function renderLanguages() {
                   const nav = document.getElementById('languageNav');
                   languages.forEach(lang => {
@@ -67,9 +61,9 @@
                         btn.className = 'w-full flex items-center p-4 rounded-lg glass hover:bg-opacity-70 transition-all dark:text-white';
                         btn.setAttribute('data-file', lang.file);
                         btn.innerHTML = `
-                        <span class="mr-3 text-xl" style="color: ${lang.color}">${lang.icon}</span>
-                        <span class="font-medium">${lang.name}</span>
-                        `;
+          <span class="mr-3 text-xl" style="color: ${lang.color}">${lang.icon}</span>
+          <span class="font-medium">${lang.name}</span>
+        `;
                         btn.onclick = () => {
                               loadDocumentation(lang.file);
                               if (window.innerWidth < 768) {
@@ -86,18 +80,17 @@
                         const response = await fetch(`markdown/${file}`);
                         if (response.ok) {
                               const markdown = await response.text();
-                              const converter = new showdown.Converter();
-
-                              converter.addExtension(() => {
-                                    return [{
-                                          type: 'output',
-                                          regex: /<h([1-6])>([^<]+)<\/h\1>/g,
-                                          replace: (match, level, text) => {
-                                                const id = text.toLowerCase().replace(' ', '-');
-                                                return `<h${level} id="${id}">${text}</h${level}>`;
-                                          }
-                                    }];
-                              }, 'headingId');
+                              const converter = new showdown.Converter({
+                                    tables: true,
+                                    ghCodeBlocks: true,
+                                    tasklists: true,
+                                    strikethrough: true,
+                                    smoothLivePreview: true,
+                                    simpleLineBreaks: true,
+                                    requireSpaceBeforeHeadingText: true,
+                                    ghCompatibleHeaderId: true,
+                                    headerLevelStart: 2,
+                              });
 
                               const html = converter.makeHtml(markdown);
                               content.innerHTML = html;
@@ -146,16 +139,6 @@
 
             renderLanguages();
             loadDocumentation('README.md');
-
-            // Check if there's a stored theme preference
-            // const savedTheme = localStorage.getItem('theme');
-            // if (savedTheme) {
-            //       if (savedTheme === 'dark') {
-            //             document.documentElement.classList.add('dark');
-            //       }
-            // } else if (window.matchMedia('(prefers-color-scheme: dark)').matches) {
-            //       document.documentElement.classList.add('dark');
-            // }
       </script>
 </body>
 
