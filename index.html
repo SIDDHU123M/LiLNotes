@@ -13,37 +13,43 @@
       <script defer src="https://unpkg.com/prismjs@1.29.0/components/prism-core.min.js"></script>
       <script defer src="https://unpkg.com/prismjs@1.29.0/plugins/autoloader/prism-autoloader.min.js"></script>
       <script defer src="https://cdn.jsdelivr.net/npm/showdown/dist/showdown.min.js"></script>
+      <style>
+    #content ul { @apply list-disc pl-6 mb-4 text-gray-300; }
+    @media (max-width: 768px) {
+        .sidebar {
+            transform: translateX(-100%);
+            transition: transform 0.3s ease;
+        }
+        .sidebar.active {
+            transform: translateX(0);
+        }
+    }
+      </style>
 </head>
 
 <body
       class="min-h-screen bg-gradient-to-br from-blue-50 via-indigo-50 to-purple-50 dark:from-gray-900 dark:via-gray-800 dark:to-gray-900 transition-colors duration-300">
       <!-- Mobile Menu Button -->
-      <button onclick="toggleSidebar()"
-            class="mobile-menu fixed top-4 left-4 z-50 p-2 glass rounded-lg dark:text-white">
-            <i class="bi bi-list text-2xl"></i>
-      </button>
+    <button onclick="toggleSidebar()" class="fixed top-4 left-4 z-50 p-2 glass rounded-lg md:hidden">
+        <i class="bi bi-list text-2xl"></i>
+    </button>
 
-      <div class="flex flex-col md:flex-row h-screen">
-            <!-- Sidebar -->
-            <aside id="sidebar" class="mx-auto rounded-xl sidebar glass w-full md:w-72 p-6 overflow-y-auto">
-                  <div class="flex items-center justify-between mb-8">
-                        <h1
-                              class="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 dark:from-blue-400 dark:to-purple-400 bg-clip-text text-transparent">
-                              LittlE Notes
-                        </h1>
-                  </div>
-                  <nav id="languageNav" class="space-y-2.5">
-                  </nav>
-            </aside>
+    <div class="flex min-h-screen">
+        <aside id="sidebar" class="sidebar fixed md:relative w-[280px] h-full glass p-6 overflow-y-auto z-40">
+            <div class="flex items-center justify-between mb-8">
+                <h1 class="text-2xl font-bold text-purple-400">LiL Notes</h1>
+            </div>
+            <nav id="languageNav" class="space-y-2.5">
+                <!-- Languages will be inserted here -->
+            </nav>
+        </aside>
 
-            <!-- Main Content -->
-            <main class="flex-1 p-6 overflow-y-auto">
-                  <div id="content"
-                        class="max-w-6xl mx-auto glass p-8 rounded-xl dark:text-white prose dark:prose-invert">
-                        <!-- content inserted -->
-                  </div>
-            </main>
-      </div>
+        <main class="flex-1 p-6 md:ml-[280px]">
+            <div id="content" class="max-w-4xl mx-auto glass p-8 rounded-xl prose prose-invert">
+                <!-- Content will be inserted here -->
+            </div>
+        </main>
+    </div>
 
       <script>
             const languages = [
@@ -132,10 +138,10 @@
                   document.documentElement.classList.toggle('dark');
             }
 
-            function toggleSidebar() {
-                  const sidebar = document.getElementById('sidebar');
-                  sidebar.classList.toggle('active');
-            }
+function toggleSidebar() {
+    const sidebar = document.getElementById('sidebar');
+    sidebar.classList.toggle('active');
+}
 
             renderLanguages();
             loadDocumentation('README.md');
